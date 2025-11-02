@@ -2,3 +2,5 @@
 
 ## Install
 // Documentation in progress
+
+## nvim

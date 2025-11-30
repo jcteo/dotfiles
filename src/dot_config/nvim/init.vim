@@ -29,11 +29,15 @@ Plug 'Shougo/ddc-ui-native'
 " DDC sources
 Plug 'Shougo/ddc-source-around'
 Plug 'LumaKernel/ddc-source-file'
+Plug 'Shougo/ddc-source-lsp'
 Plug 'LumaKernel/ddc-tabnine'
 " DDC filters
 Plug 'Shougo/ddc-matcher_head'
 Plug 'Shougo/ddc-sorter_rank'
 " ----------------------- /DDC
+" ----------------------- LSP
+" Plug 'neovim/nvim-lspconfig'
+" ----------------------- /LSP
 "
 " TODO: see CocSearch or fzf. or Telescope Replace ctrlpvim?
 " TODO: check plugin for compact code compact in JSON file for example
@@ -43,7 +47,7 @@ Plug 'Shougo/ddc-sorter_rank'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'BurntSushi/ripgrep'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }
-  Plug 'nvim-telescope/telescope-live-grep-args.nvim'
+Plug 'nvim-telescope/telescope-live-grep-args.nvim'
 Plug 'pwntester/octo.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
 "Plug 'ctrlpvim/ctrlp.vim'
@@ -74,7 +78,6 @@ Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 
 " profile/html
-"Plug 'mattn/emmet-vim'
 if !empty(glob(profileDir."plugins.vim"))
   execute "source ".profileDir."plugins.vim"
 endif
@@ -100,6 +103,32 @@ set backspace=2
 "::: DDC // TODO pass to a separate file
 " Customize global settings
 
+lua << EOF
+vim.lsp.config('*', {
+  capabilities = require("ddc_source_lsp").make_client_capabilities(),
+})
+
+--[===[
+local servers = { 'tsserver' }
+for _, lsp in pairs(servers) do
+  vim.lsp.config(lsp, {
+    on_attach = on_attach,
+    capabilites = capabilities,
+  })
+  vim.lsp.enable(lsp)
+end
+--]===]
+
+vim.lsp.config('tsserver', {
+  cmd = { 'typescript-language-server', '--stdio' },
+  file_types = {'javascript', 'typescript'},
+  capabilities = capabilities,
+})
+
+vim.lsp.enable("tsserver")
+
+EOF
+
 " You must set the default ui.
 " NOTE: native ui
 " https://github.com/Shougo/ddc-ui-native
@@ -109,7 +138,7 @@ call ddc#custom#patch_global('ui', 'native')
 " https://github.com/Shougo/ddc-source-around
 " Use source tabnine
 " call ddc#custom#patch_global('sources', ['around', 'file', 'tabnine'])
-call ddc#custom#patch_global('sources', ['around', 'file'])
+call ddc#custom#patch_global('sources', ['around', 'file', 'lsp'])
 
 " Use matcher_head and sorter_rank.
 " https://github.com/Shougo/ddc-matcher_head
@@ -123,6 +152,25 @@ call ddc#custom#patch_global('sourceOptions', #{
 " Change source options
 call ddc#custom#patch_global('sourceOptions', #{
       \   around: #{ mark: 'A' },
+      \ })
+
+" LSP
+call ddc#custom#patch_global('sourceOptions', #{
+      \   lsp: #{
+      \     isVolatile: v:true,
+      \     mark: 'lsp',
+      \     forceCompletionPattern: '\.\w*|:\w*|->\w*',
+      \   },
+      \ })
+
+call ddc#custom#patch_global('sourceParams', #{
+      \   lsp: #{
+      \     snippetEngine: denops#callback#register({
+      \           body -> vsnip#anonymous(body)
+      \     }),
+      \     enableResolveItem: v:true,
+      \     enableAdditionalTextEdit: v:true,
+      \   }
       \ })
 
 "call ddc#custom#patch_global('sourceOptions', #{

@@ -35,10 +35,6 @@ Plug 'LumaKernel/ddc-tabnine'
 Plug 'Shougo/ddc-matcher_head'
 Plug 'Shougo/ddc-sorter_rank'
 " ----------------------- /DDC
-" ----------------------- LSP
-" Plug 'neovim/nvim-lspconfig'
-" ----------------------- /LSP
-"
 " TODO: see CocSearch or fzf. or Telescope Replace ctrlpvim?
 " TODO: check plugin for compact code compact in JSON file for example
 " TODO: review Coc to Classes, variables definitions navigation (like Ctrl+Click de intelliJ)
@@ -100,34 +96,11 @@ set cursorline
 syntax on
 set backspace=2
 
+"::: LUA
+lua require('init')
+
 "::: DDC // TODO pass to a separate file
 " Customize global settings
-
-lua << EOF
-vim.lsp.config('*', {
-  capabilities = require("ddc_source_lsp").make_client_capabilities(),
-})
-
---[===[
-local servers = { 'tsserver' }
-for _, lsp in pairs(servers) do
-  vim.lsp.config(lsp, {
-    on_attach = on_attach,
-    capabilites = capabilities,
-  })
-  vim.lsp.enable(lsp)
-end
---]===]
-
-vim.lsp.config('tsserver', {
-  cmd = { 'typescript-language-server', '--stdio' },
-  file_types = {'javascript', 'typescript'},
-  capabilities = capabilities,
-})
-
-vim.lsp.enable("tsserver")
-
-EOF
 
 " You must set the default ui.
 " NOTE: native ui
@@ -192,46 +165,6 @@ call ddc#custom#patch_filetype(['c', 'cpp'], 'sourceOptions', #{
 call ddc#custom#patch_filetype('markdown', 'sourceParams', #{
       \   around: #{ maxSize: 100 },
       \ })
-
-" LUA
-" TODO: import lua from file source '~/.config/nvim/lua/init.lua'
-lua << EOF
-  require('gitsigns').setup {
-    signs = {
-      add       = { text = ">" },
-      delete    = { text = "<" },
-    }
-  }
-
-  require('telescope').load_extension('live_grep_args')
-
-  require('octo').setup({
-    mappings = {
-      review_thread = {
-        close_review_tab = { lhs = "<C-q>", desc = "close review tab" }
-      },
-      submit_win = {
-        close_review_tab = { lhs = "<C-q>", desc = "close review tab" }
-      },
-      review_diff = {
-        close_review_tab = { lhs = "<C-q>", desc = "close review tab" }
-      },
-      file_pannel = {
-        close_review_tab = { lhs = "<C-q>", desc = "close review tab" }
-      }
-    }
-  })
-
-  require('tabnine').setup({
-    disable_auto_comment=true,
-    accept_keymap="<Tab>",
-    dismiss_keymap = "<C-]>",
-    debounce_ms = 800,
-    suggestion_color = {gui = "#808080", cterm = 244},
-    exclude_filetypes = {"TelescopePrompt", "NvimTree"},
-    log_file_path = nil, -- absolute path to Tabnine log file
-  })
-EOF
 
 " Mappings
 

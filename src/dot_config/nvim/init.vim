@@ -14,10 +14,10 @@ endif
 let profileDir="~/.config/nvim/profiles/".vimProfile."/"
 
 " Change for Shougo/dein.vim???
+" TODO: Check mason
 call plug#begin('~/.local/share/nvim/plugged')
 
 "=========PLUGINS
-
 " profile/base
 " DDC -----------------------
 " // Needs [Deno](https://deno.land/manual@v1.35.1/getting_started/installation) Installed
@@ -46,7 +46,9 @@ Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }
 Plug 'nvim-telescope/telescope-live-grep-args.nvim'
 Plug 'pwntester/octo.nvim'
 Plug 'nvim-tree/nvim-web-devicons'
+Plug 'neovim/nvim-lspconfig'
 "Plug 'ctrlpvim/ctrlp.vim'
+Plug 'nvim-tree/nvim-web-devicons'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 " icon colors on nerdtree
@@ -62,6 +64,8 @@ Plug 'joonty/vdebug'
 Plug 'maksimr/vim-jsbeautify'
 " Plug 'editorconfig-vim'
 Plug 'vim-scripts/vim-auto-save'
+" HTML
+" Plug 'mattn/emmet-vim'
 " THEMES
 Plug 'nanotech/jellybeans.vim'
 
@@ -97,6 +101,26 @@ syntax on
 set backspace=2
 
 "::: LUA
+
+call ddc#custom#patch_global('sources', ['lsp'])
+call ddc#custom#patch_global('sourceOptions', #{
+      \   lsp: #{
+      \     isVolatile: v:true,
+      \     mark: 'lsp',
+      \     forceCompletionPattern: '\.\w*|:\w*|->\w*',
+      \   },
+      \ })
+
+call ddc#custom#patch_global('sourceParams', #{
+      \   lsp: #{
+      \     snippetEngine: denops#callback#register({
+      \           body -> vsnip#anonymous(body)
+      \     }),
+      \     enableResolveItem: v:true,
+      \     enableAdditionalTextEdit: v:true,
+      \   }
+      \ })
+
 lua require('init')
 
 "::: DDC // TODO pass to a separate file

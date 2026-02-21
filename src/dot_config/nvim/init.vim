@@ -28,6 +28,10 @@ Plug 'vim-denops/denops.vim'
 Plug 'Shougo/ddc-ui-native'
 " DDC sources
 Plug 'Shougo/ddc-source-around'
+" Snippet engine for ddc
+Plug 'hrsh7th/vim-vsnip'
+Plug 'uga-rosa/ddc-source-vsnip'
+Plug 'rafamadriz/friendly-snippets'
 Plug 'LumaKernel/ddc-source-file'
 Plug 'Shougo/ddc-source-lsp'
 Plug 'LumaKernel/ddc-tabnine'
@@ -38,8 +42,8 @@ Plug 'Shougo/ddc-sorter_rank'
 " TODO: see CocSearch or fzf. or Telescope Replace ctrlpvim?
 " TODO: check plugin for compact code compact in JSON file for example
 " TODO: review Coc to Classes, variables definitions navigation (like Ctrl+Click de intelliJ)
-" TODO: install font (Nerd Font)[https://github.com/ryanoasis/nerd-fonts#font-installation]  in order to make devicons work
 " TODO: install vim-visual-multi edit in multilines
+" TODO: check nvim-treesitter got jsx highlighting
 Plug 'nvim-lua/plenary.nvim'
 Plug 'BurntSushi/ripgrep'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }
@@ -65,7 +69,7 @@ Plug 'maksimr/vim-jsbeautify'
 " Plug 'editorconfig-vim'
 Plug 'vim-scripts/vim-auto-save'
 " HTML
-" Plug 'mattn/emmet-vim'
+Plug 'mattn/emmet-vim'
 " THEMES
 Plug 'nanotech/jellybeans.vim'
 
@@ -102,11 +106,10 @@ set backspace=2
 
 "::: LUA
 
-call ddc#custom#patch_global('sources', ['lsp'])
 call ddc#custom#patch_global('sourceOptions', #{
       \   lsp: #{
       \     isVolatile: v:true,
-      \     mark: 'lsp',
+      \     mark: 'LSP',
       \     forceCompletionPattern: '\.\w*|:\w*|->\w*',
       \   },
       \ })
@@ -135,7 +138,7 @@ call ddc#custom#patch_global('ui', 'native')
 " https://github.com/Shougo/ddc-source-around
 " Use source tabnine
 " call ddc#custom#patch_global('sources', ['around', 'file', 'tabnine'])
-call ddc#custom#patch_global('sources', ['around', 'file', 'lsp'])
+call ddc#custom#patch_global('sources', ['around', 'file', 'lsp', 'vsnip'])
 
 " Use matcher_head and sorter_rank.
 " https://github.com/Shougo/ddc-matcher_head
@@ -151,23 +154,8 @@ call ddc#custom#patch_global('sourceOptions', #{
       \   around: #{ mark: 'A' },
       \ })
 
-" LSP
 call ddc#custom#patch_global('sourceOptions', #{
-      \   lsp: #{
-      \     isVolatile: v:true,
-      \     mark: 'lsp',
-      \     forceCompletionPattern: '\.\w*|:\w*|->\w*',
-      \   },
-      \ })
-
-call ddc#custom#patch_global('sourceParams', #{
-      \   lsp: #{
-      \     snippetEngine: denops#callback#register({
-      \           body -> vsnip#anonymous(body)
-      \     }),
-      \     enableResolveItem: v:true,
-      \     enableAdditionalTextEdit: v:true,
-      \   }
+      \   vsnip: #{ mark: 'VSN' },
       \ })
 
 "call ddc#custom#patch_global('sourceOptions', #{
@@ -270,6 +258,15 @@ set nofoldenable
 ":::FUGITIVE
 set diffopt+=vertical
 
+"::: VSNIP
+" Expand
+imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+
+" Expand or jump
+imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+
 "=========MAPS
 nmap <C-X> :mksession!<CR>:echo "Sesion Guardada!"<CR>
 
@@ -308,8 +305,6 @@ command! Octorw Octo pr search type:pr repo:perfectsense/tvazteca user-review-re
 " profiles/html
 " TODO: move to brightspot profile
 au BufReadPost *.hbs set syntax=html
-"nmap <C-E> <C-Y>,
-"imap <C-E> <C-Y>,
 
 if !empty(glob(profileDir."source.vim"))
   execute "source ".profileDir."source.vim"

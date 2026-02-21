@@ -2,7 +2,9 @@ vim.lsp.set_log_level("debug")
 
 local capabilities = require("ddc_source_lsp").make_client_capabilities()
 capabilities.workspace.didChangeConfiguration.dynamicRegistration = true
-capabilities.workspace.didChangeWorkspaceFolders.dynamicRegistration = true
+capabilities.workspace.didChangeWorkspaceFolders = {
+  dynamicRegistration = true,
+}
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 --[===[

@@ -35,36 +35,39 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'rafamadriz/friendly-snippets'
+"lua
 Plug 'nvim-lua/plenary.nvim'
+"files
 Plug 'BurntSushi/ripgrep'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }
 Plug 'nvim-telescope/telescope-live-grep-args.nvim'
-Plug 'pwntester/octo.nvim'
-Plug 'nvim-tree/nvim-web-devicons'
-Plug 'neovim/nvim-lspconfig'
-"Plug 'ctrlpvim/ctrlp.vim'
-Plug 'nvim-tree/nvim-web-devicons'
-Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
-" icon colors on nerdtree
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'dense-analysis/ale'
-Plug 'jiangmiao/auto-pairs'
-Plug 'ryanoasis/vim-devicons'
-Plug 'tpope/vim-surround'
-" ack replaced with telescope live_grep
-"Plug 'mileszs/ack.vim'
-Plug 'bling/vim-airline'
-Plug 'joonty/vdebug'
-Plug 'maksimr/vim-jsbeautify'
-" Plug 'editorconfig-vim'
-Plug 'vim-scripts/vim-auto-save'
-" THEMES
-Plug 'nanotech/jellybeans.vim'
-
-" git
+"git
+Plug 'pwntester/octo.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'lewis6991/gitsigns.nvim'
+"lsp
+Plug 'neovim/nvim-lspconfig'
+"Plug 'ctrlpvim/ctrlp.vim'
+"visual
+Plug 'nvim-tree/nvim-web-devicons'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
+Plug 'maksimr/vim-jsbeautify'
+Plug 'nanotech/jellybeans.vim'
+Plug 'nvim-tree/nvim-web-devicons'
+"utils
+Plug 'scrooloose/nerdcommenter'
+" icon colors on nerdtree
+" ALE muestra doble los errores de tsx usando tsserver, por eso se deshabilito
+" Plug 'dense-analysis/ale'
+Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-surround'
+
+Plug 'bling/vim-airline'
+Plug 'joonty/vdebug'
+" Plug 'editorconfig-vim'
+Plug 'vim-scripts/vim-auto-save'
 
 " notes
 Plug 'godlygeek/tabular'
@@ -186,7 +189,7 @@ let NERDTreeQuitOnOpen=1
 "let g:auto_save=1
 
 "::ALE
-let g:ale_linters = {'javascript': ['eslint'], 'less': ['lesshint']}
+" let g:ale_linters = {'javascript': ['eslint'], 'less': ['lesshint']}
 
 
 ":::VIM-AIRLINE
@@ -278,5 +281,6 @@ au BufReadPost *.hbs set syntax=html
 if !empty(glob(profileDir."source.vim"))
   execute "source ".profileDir."source.vim"
 endif
+
 
 echo "Using profile: ".vimProfile

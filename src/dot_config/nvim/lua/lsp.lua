@@ -8,19 +8,17 @@ capabilities.workspace.didChangeWorkspaceFolders = {
 }
 capabilities.textDocument.completion.completionItem.snippetSupport = true]]
 
---[===[
+--[===[ For all ls's?
 vim.lsp.config('*', {
   capabilities = capabilities
 })
 --]===]
 
-vim.lsp.config("tsserver", {
-  cmd = { "typescript-language-server", "--stdio" },
-  capabilities = capabilities,
-  filetypes = {"javascript", "typescript"},
+vim.lsp.config("ts_ls", {
+  capabilities = capabilities
 })
 
-vim.lsp.enable("tsserver")
+vim.lsp.enable("ts_ls")
 
 vim.lsp.config('emmet_language_server', {
   filetypes = {'html', 'javascript', 'typescript', 'js'},
@@ -49,30 +47,15 @@ vim.lsp.config('emmet_language_server', {
 
 vim.lsp.enable("emmet_language_server")
 
+vim.lsp.config("cssls", {
+  capabilities = capabilities
+})
+vim.lsp.enable("cssls")
+
 --[[vim.lsp.config('vscode-html-language-server', {
   capabilities = capabilities
 })
 vim.lsp.enable("vscode-html-language-server")]]
-
---[[vim.lsp.config("emmet_ls", {
-  cmd = { "emmet-ls", "--stdio" },
-  capabilities = capabilities,
-  filetypes = {'html', 'css'},
-  init_options = {
-    html = {
-      options = {
-        ["beam.enabled"] = true,
-      }
-    }
-  },
-  root_markers = {'.git'},
-})]]
-
---[[vim.lsp.config("emmet_ls", {
-  capabilities = capabilities
-})
-
-vim.lsp.enable('emmet_ls')]]
 
 --[[vim.lsp.config('html', {
   capabilities = capabilities
@@ -80,3 +63,5 @@ vim.lsp.enable('emmet_ls')]]
 vim.lsp.enable('html')]]
 
 --]===]
+
+

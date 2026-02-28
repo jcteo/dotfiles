@@ -1,3 +1,24 @@
+local function diagnosticFormat(diagnostic)
+  return ("%s|%s"):format(diagnostic.message, diagnostic.source)
+end
+
+vim.diagnostic.config({
+  virtual_text = false,
+  severity_sort = true,
+  float = {
+    border = "rounded",
+    sourse = "always",
+    format = diagnosticFormat
+  }
+})
+
+--Open diagnostic on hover
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback= function()
+    vim.diagnostic.open_float({ focusable = false })
+  end
+})
+
 require('gitsigns').setup {
   signs = {
     add       = { text = ">" },

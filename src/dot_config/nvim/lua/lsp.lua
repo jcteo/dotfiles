@@ -1,11 +1,12 @@
-vim.lsp.set_log_level("debug")
+--vim.lsp.set_log_level("debug")
 
-local capabilities = require("ddc_source_lsp").make_client_capabilities()
-capabilities.workspace.didChangeConfiguration.dynamicRegistration = true
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+--[[capabilities.workspace.didChangeConfiguration.dynamicRegistration = true
 capabilities.workspace.didChangeWorkspaceFolders = {
   dynamicRegistration = true,
 }
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.snippetSupport = true]]
 
 --[===[
 vim.lsp.config('*', {
@@ -21,7 +22,7 @@ vim.lsp.config("tsserver", {
 
 vim.lsp.enable("tsserver")
 
---[[vim.lsp.config('emmet_language_server', {
+vim.lsp.config('emmet_language_server', {
   filetypes = {'html', 'javascript', 'typescript', 'js'},
   capabilities = capabilities,
   init_options = {
@@ -43,10 +44,11 @@ vim.lsp.enable("tsserver")
     syntaxProfiles = {},
     --- @type table<string, string> [Emmet Docs](https://docs.emmet.io/customization/snippets/#variables)
     variables = {},
-  
+  }
 })
+
 vim.lsp.enable("emmet_language_server")
-]]
+
 --[[vim.lsp.config('vscode-html-language-server', {
   capabilities = capabilities
 })
@@ -66,11 +68,11 @@ vim.lsp.enable("vscode-html-language-server")]]
   root_markers = {'.git'},
 })]]
 
-vim.lsp.config("emmet_ls", {
+--[[vim.lsp.config("emmet_ls", {
   capabilities = capabilities
 })
 
-vim.lsp.enable('emmet_ls')
+vim.lsp.enable('emmet_ls')]]
 
 --[[vim.lsp.config('html', {
   capabilities = capabilities

@@ -14,6 +14,34 @@ vim.lsp.config('*', {
 })
 --]===]
 
+
+-- EMF general purpose lenguage server
+-- show less errors, vscode-langservers-extracted do not works with less errors
+local lessc = {
+  lintCommand = "lessc --no-color ${INPUT}",
+  lintStdin = false,
+  lintIgnoreExitCode = true,
+  lintFormats = {
+    "%E%m in %f on line %l, column %c:", -- Formato para errores de lessc
+    "%-G%.%#"
+  },
+  rootMarkers = {"package.json", ".git"}
+}
+
+vim.lsp.config('efm', {
+  capabilities = capabilities,
+  init_options = {documentFormatting = true},
+  settings = {
+    languages = {
+      less = {lessc}
+    }
+  },
+  rootMarkers = {"package.json", ".git"},
+  filetypes = {"less"}
+})
+
+vim.lsp.enable('efm')
+
 vim.lsp.config("ts_ls", {
   capabilities = capabilities
 })
@@ -47,10 +75,19 @@ vim.lsp.config('emmet_language_server', {
 
 vim.lsp.enable("emmet_language_server")
 
-vim.lsp.config("cssls", {
-  capabilities = capabilities
+-- No esta mostrando errores de less como variables no definidas
+--[[vim.lsp.config("cssls", {
+  capabilities = capabilities,
+  settings = {
+    less = {
+      validate = true,
+      lint = {
+        unknownVariables = "error"
+      }
+    }
+  }
 })
-vim.lsp.enable("cssls")
+vim.lsp.enable("cssls")]]
 
 --[[vim.lsp.config('vscode-html-language-server', {
   capabilities = capabilities

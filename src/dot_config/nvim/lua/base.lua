@@ -1,3 +1,10 @@
+
+-- Package manager (lsps)
+-- Mason
+require("mason").setup()
+
+
+-- Diagnostics
 local function diagnosticFormat(diagnostic)
   return ("%s|%s"):format(diagnostic.message, diagnostic.source)
 end
@@ -17,6 +24,15 @@ vim.api.nvim_create_autocmd("CursorHold", {
   callback= function()
     vim.diagnostic.open_float({ focusable = false })
   end
+})
+
+-- linters
+local null_ls = require("null-ls")
+
+null_ls.setup({
+  sources = {
+    null_ls.builtins.diagnostics.stylelint
+  }
 })
 
 require('gitsigns').setup {

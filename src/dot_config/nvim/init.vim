@@ -25,8 +25,9 @@ call plug#begin('~/.local/share/nvim/plugged')
 " TODO: install vim-visual-multi edit in multilines
 " TODO: check nvim-treesitter got jsx highlighting
 "
-" profile/base
+" PROFILE/BASE
 " Plug 'codota/tabnine-nvim', {'do': './dl_binaries.sh'}
+Plug 'mason-org/mason.nvim'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
@@ -37,6 +38,7 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'rafamadriz/friendly-snippets'
 "lua
 Plug 'nvim-lua/plenary.nvim'
+Plug 'nvimtools/none-ls.nvim'
 "files
 Plug 'BurntSushi/ripgrep'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.5' }

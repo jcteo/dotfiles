@@ -49,7 +49,7 @@ vim.lsp.config("ts_ls", {
 vim.lsp.enable("ts_ls")
 
 vim.lsp.config('emmet_language_server', {
-  filetypes = {'html', 'javascript', 'typescript', 'js'},
+  filetypes = {'html', 'javascript',  'typescript', 'typescriptreact'},
   capabilities = capabilities,
   init_options = {
     ---@type table<string, string>
